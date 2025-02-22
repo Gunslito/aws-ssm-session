@@ -64,11 +64,7 @@ docker run --rm -it \
     aws-ssm-session
 ```
 
-### 3. Parameters
-- `-p <profile>` → Specifies the AWS profile to use.
-- `-i <instance_id>` → Specifies the instance ID to connect.
-
-### 4. Docker parameteres
+### 3. Docker parameteres
 - `-v "$HOME/.aws:/root/.aws:ro"` → Mounts AWS credentials for authentication.
 - `--rm` → Ensures the container is removed after execution.
 
@@ -81,6 +77,10 @@ Or specify parameters directly:
 ```bash
 aws-ssm-session -p my-aws-profile -i i-0123456789abcdef
 ```
+
+### Script Parameters
+- `-p <profile>` → Specifies the AWS profile to use.
+- `-i <instance_id>` → Specifies the instance ID to connect.
 
 ## Example
 ```bash
