@@ -1,5 +1,14 @@
 # AWS SSM Connection Script
 
+[Docker hub image](https://hub.docker.com/r/gunslito/aws-ssm-session)
+## TL;DR
+You need to have **Docker** installed and **AWS CLI configured with profiles** in your **host**.
+-Command to run directly from docker hub repository
+```bash
+docker run --rm -it -v "$HOME/.aws:/root/.aws:ro" aws-ssm-session
+```
+
+## Description
 Bash script to easily start **SSM sessions** with AWS instances. It supports **AWS profile selection**, **instance filtering**, and **automatic SSO token management**.
 
 ## Features
