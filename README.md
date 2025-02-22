@@ -15,7 +15,7 @@ Bash script to easily start **SSM sessions** with AWS instances. It supports **A
 - The **instance** must have the necessary [IAM role](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-permissions.html) with SSM permissions. You can use these AWS-managed policies:
     * `AmazonSSMManagedInstanceCore` (Required for SSM to function correctly).
     * `CloudWatchAgentServerPolicy` (Required for SSM to upload session logs to CloudWatch).
-- Tested on **GNU bash**, version 5.1.16(1)-release (x86_64-pc-linux-gnu).
+- The instance must have the tag with the key:value "*ssm:enabled*" and must be in *running state*.
 
 ## Installation
 To use this script easily, follow these steps:
