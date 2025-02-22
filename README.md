@@ -8,8 +8,15 @@ Bash script to easily start **SSM sessions** with AWS instances. It supports **A
 - **Instance selection** based on tags (`ssm:enabled`, running state).
 - **Automatic SSO login/logout handling** if the session expires.
 - **Direct command suggestion** for reconnecting (helpful for creating aliases).
+- **Run via Docker if you have trouble with your OS** (it mounts your ~/.aws folder into the container in read only mode).
 
-## Requirements
+## Local host requirements
+- [**AWS cli v2**](https://github.com/aws/aws-cli.git)
+- [**Session manager plugin**](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
+- **Bash version 5.1.16(1)-release (x86_64-pc-linux-gnu)+**
+- **Docker** (optional for docker image)
+
+## AWS Requirements
 - The **instance** must have the [Amazon SSM agent](https://docs.aws.amazon.com/systems-manager/latest/userguide/manually-install-ssm-agent-linux.html) correctly installed.
 - The **instance** must have an outbound connection (HTTPS/443) to the AWS-SSM network or `0.0.0.0/0`.
 - The **instance** must have the necessary [IAM role](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-permissions.html) with SSM permissions. You can use these AWS-managed policies:
@@ -17,8 +24,9 @@ Bash script to easily start **SSM sessions** with AWS instances. It supports **A
     * `CloudWatchAgentServerPolicy` (Required for SSM to upload session logs to CloudWatch).
 - The instance must have the tag with the key:value "*ssm:enabled*" and must be in *running state*.
 
+
 ## Installation
-To use this script easily, follow these steps:
+You can copy aws-ssm-session.sh and execute directly, but if you don't have everything installed you can follow these steps:
 
 ### 1. Clone the repository
 ```bash
@@ -31,7 +39,7 @@ cd aws-ssm-session
 chmod +x aws-ssm-session.sh
 ```
 
-### 3. Create an alias for quick access
+### 3. Create an alias for quick access (Optional)
 To use the script from anywhere, add this line to your `~/.bashrc` or `~/.zshrc`:
 ```bash
 alias aws-ssm-session='~/aws-ssm-session/aws-ssm-session.sh'
@@ -40,6 +48,29 @@ Then apply the changes:
 ```bash
 source ~/.bashrc  # or source ~/.zshrc
 ```
+
+## Running with Docker
+If you prefer running the script inside a Docker container, build the image and execute it as follows:
+
+### 1. Build the Docker image
+```bash
+docker build -t aws-ssm-session .
+```
+
+### 2. Run the script in a container
+```bash
+docker run --rm -it \
+    -v "$HOME/.aws:/root/.aws:ro" \
+    aws-ssm-session
+```
+
+### 3. Parameters
+- `-p <profile>` → Specifies the AWS profile to use.
+- `-i <instance_id>` → Specifies the instance ID to connect.
+
+### 4. Docker parameteres
+- `-v "$HOME/.aws:/root/.aws:ro"` → Mounts AWS credentials for authentication.
+- `--rm` → Ensures the container is removed after execution.
 
 ## Usage
 You can now run the script using:
@@ -50,9 +81,18 @@ Or specify parameters directly:
 ```bash
 aws-ssm-session -p my-aws-profile -i i-0123456789abcdef
 ```
+
 ## Example
 ```bash
 user@example: ./aws-ssm-session.sh
+
+---------------------------------------------------------------------
+    ___      _____   ___ ___ __  __   ___ ___ ___ ___ ___ ___  _  _
+   /_\ \    / / __| / __/ __|  \/  | / __| __/ __/ __|_ _/ _ \| \| |
+  / _ \ \/\/ /\__ \ \__ \__ \ |\/| | \__ \ _|\__ \__ \| | (_) | .  |
+ /_/ \_\_/\_/ |___/ |___/___/_|  |_| |___/___|___/___\___/___/|_|\_|
+                                                        by Gunslito
+---------------------------------------------------------------------
 
 ==[ Please select your AWS Profile ]====================================================================================
 1) aws-cli-profile-1
