@@ -148,3 +148,6 @@ Command to connect directly to instance-2-name:
 ========================================================================================================================
 user@example:
 ```
+
+## License
+This project is licensed under the **Creative Commons CC0 1.0 Universal**. See the full license for details.
